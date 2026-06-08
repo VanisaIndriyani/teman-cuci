@@ -250,24 +250,9 @@
                 <h6 class="text-blue-light fw-bold text-uppercase">Video Panduan</h6>
                 <h2 class="section-title">Edukasi Perawatan<br>Pakaian Berkualitas</h2>
                 <p class="text-muted mb-4 fs-5">Tonton video tutorial kami untuk memahami cara kerja aplikasi dan tips dasar mencuci yang sering diabaikan.</p>
-                <div class="d-flex align-items-center mb-3 video-feature">
-                    <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
-                        <i class="bi bi-check-lg"></i>
-                    </div>
-                    <span class="fw-semibold">Teknik pemisahan kain yang benar</span>
-                </div>
-                <div class="d-flex align-items-center mb-3 video-feature">
-                    <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
-                        <i class="bi bi-check-lg"></i>
-                    </div>
-                    <span class="fw-semibold">Mengenal jenis noda dan solusinya</span>
-                </div>
-                <div class="d-flex align-items-center video-feature">
-                    <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
-                        <i class="bi bi-check-lg"></i>
-                    </div>
-                    <span class="fw-semibold">Tips menjemur agar warna tetap cerah</span>
-                </div>
+               
+               
+              
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="video-container">
