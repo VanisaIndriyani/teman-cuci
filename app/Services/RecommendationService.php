@@ -92,7 +92,7 @@ class RecommendationService
                     ->where('attribute_value', $attrValue)
                     ->first();
                 
-                $matrix[$m][$c] = $score ? $score->score : 1; // Default to 1 if not found
+                $matrix[$m][$c] = $score ? $score->score : 0;
             }
         }
 
