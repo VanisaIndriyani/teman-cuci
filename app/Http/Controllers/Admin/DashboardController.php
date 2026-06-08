@@ -8,6 +8,10 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class DashboardController extends Controller
 {
@@ -41,40 +45,40 @@ class DashboardController extends Controller
 
     public function export()
     {
-        $fileName = 'rekomendasi_' . date('Y-m-d') . '.csv';
-        $logs = RecLog::all();
+        $fileName = 'rekomendasi_' . date('Y-m-d') . '.xlsx';
 
-        $headers = array(
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        );
+        $export = new class($this) implements FromCollection, WithHeadings, WithMapping
+        {
+            public function __construct(private DashboardController $controller) {}
 
-        $columns = array('ID', 'Jenis Kain', 'Warna', 'Motif', 'Tingkat Kekotoran', 'Metode Rekomendasi', 'Skor SAW', 'Tanggal');
-
-        $callback = function() use($logs, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
-
-            foreach ($logs as $log) {
-                $row['ID'] = $log->id;
-                $row['Jenis Kain'] = $log->fabric;
-                $row['Warna'] = $log->color;
-                $row['Motif'] = $log->motif;
-                $row['Tingkat Kekotoran'] = $log->dirt_level;
-                $row['Metode Rekomendasi'] = $log->top_method;
-                $row['Skor SAW'] = is_array($log->saw_scores) ? json_encode($log->saw_scores) : $log->saw_scores;
-                $row['Tanggal'] = $log->created_at;
-
-                fputcsv($file, array($row['ID'], $row['Jenis Kain'], $row['Warna'], $row['Motif'], $row['Tingkat Kekotoran'], $row['Metode Rekomendasi'], $row['Skor SAW'], $row['Tanggal']));
+            public function collection()
+            {
+                return RecLog::latest()->get();
             }
 
-            fclose($file);
+            public function headings(): array
+            {
+                return ['ID', 'Jenis Kain', 'Warna', 'Motif', 'Tingkat Kekotoran', 'Metode Rekomendasi', 'Skor SAW', 'Tanggal'];
+            }
+
+            public function map($log): array
+            {
+                $score = is_array($log->saw_scores) ? json_encode($log->saw_scores) : (string) $log->saw_scores;
+
+                return [
+                    $log->id,
+                    $log->fabric,
+                    $log->color,
+                    $log->motif,
+                    $log->dirt_level,
+                    $this->controller->getMethodName($log->top_method),
+                    $score,
+                    optional($log->created_at)->format('Y-m-d H:i:s'),
+                ];
+            }
         };
 
-        return response()->stream($callback, 200, $headers);
+        return Excel::download($export, $fileName);
     }
 
     private function getMethodName($m)
