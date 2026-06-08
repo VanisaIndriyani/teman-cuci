@@ -60,7 +60,7 @@
                     <div class="modal fade" id="editModal{{ $symbol->id }}" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content rounded-4 border-0">
-                                <form action="{{ route('admin.symbols.update', $symbol->id) }}" method="POST">
+                                <form action="{{ route('admin.symbols.update', $symbol->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf @method('PUT')
                                     <div class="modal-header border-0 pb-0">
                                         <h5 class="fw-bold">Edit Simbol</h5>
@@ -76,12 +76,21 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
+                                            <label class="form-label">Kode ISO</label>
+                                            <input type="text" name="iso_code" class="form-control" value="{{ $symbol->iso_code }}" required>
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="form-label">Nama Simbol</label>
                                             <input type="text" name="name" class="form-control" value="{{ $symbol->name }}" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">URL Gambar/Icon</label>
-                                            <input type="text" name="image_path" class="form-control" value="{{ $symbol->image_path }}" required>
+                                            <label class="form-label">Gambar/Icon</label>
+                                            <input type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/jpg,image/webp">
+                                            <div class="form-text">Kosongkan jika tidak ingin mengganti gambar.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Urutan</label>
+                                            <input type="number" name="sort_order" class="form-control" value="{{ $symbol->sort_order ?? 0 }}" min="0" max="32767">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Deskripsi Singkat</label>
@@ -122,7 +131,7 @@
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 border-0">
-            <form action="{{ route('admin.symbols.store') }}" method="POST">
+            <form action="{{ route('admin.symbols.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header border-0 pb-0">
                     <h5 class="fw-bold">Tambah Simbol Baru</h5>
@@ -138,12 +147,20 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Kode ISO</label>
+                        <input type="text" name="iso_code" class="form-control" placeholder="Contoh: W01" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Nama Simbol</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">URL Gambar/Icon</label>
-                        <input type="text" name="image_path" class="form-control" placeholder="https://..." required>
+                        <label class="form-label">Upload Gambar/Icon</label>
+                        <input type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/jpg,image/webp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Urutan</label>
+                        <input type="number" name="sort_order" class="form-control" value="0" min="0" max="32767">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Deskripsi Singkat</label>
