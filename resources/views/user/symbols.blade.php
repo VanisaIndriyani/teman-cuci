@@ -147,7 +147,12 @@
                     <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->index % 4 * 100 }}">
                         <div class="symbol-card card" data-bs-toggle="modal" data-bs-target="#symbolModal{{ $symbol->id }}">
                             <div class="symbol-img-wrapper">
-                                <img src="{{ $symbol->image_path ?? 'https://via.placeholder.com/100' }}" alt="{{ $symbol->name }}">
+                                @php
+                                    $symbolImageUrl = $symbol->image_path
+                                        ? (\Illuminate\Support\Str::startsWith($symbol->image_path, ['http://', 'https://']) ? $symbol->image_path : asset(ltrim($symbol->image_path, '/')))
+                                        : 'https://via.placeholder.com/100';
+                                @endphp
+                                <img src="{{ $symbolImageUrl }}" alt="{{ $symbol->name }}">
                             </div>
                             <h6 class="fw-bold mb-1">{{ $symbol->name }}</h6>
                             <span class="badge bg-soft-gray text-navy rounded-pill mb-2 small">{{ $symbol->iso_code }}</span>
@@ -165,7 +170,7 @@
                                 </div>
                                 <div class="modal-body text-center">
                                     <div class="bg-soft-gray rounded-4 p-5 mb-4">
-                                        <img src="{{ $symbol->image_path ?? 'https://via.placeholder.com/200' }}" style="width: 120px;" alt="{{ $symbol->name }}">
+                                        <img src="{{ $symbolImageUrl }}" style="width: 120px;" alt="{{ $symbol->name }}">
                                     </div>
                                     <h3 class="fw-800 text-navy mb-1">{{ $symbol->name }}</h3>
                                     <p class="text-blue-light fw-bold mb-4">{{ $symbol->iso_code }}</p>
@@ -191,7 +196,12 @@
                     <div class="col-6 col-md-4 col-lg-3">
                         <div class="symbol-card card" data-bs-toggle="modal" data-bs-target="#symbolModal{{ $symbol->id }}">
                             <div class="symbol-img-wrapper">
-                                <img src="{{ $symbol->image_path ?? 'https://via.placeholder.com/100' }}" alt="{{ $symbol->name }}">
+                                @php
+                                    $symbolImageUrl = $symbol->image_path
+                                        ? (\Illuminate\Support\Str::startsWith($symbol->image_path, ['http://', 'https://']) ? $symbol->image_path : asset(ltrim($symbol->image_path, '/')))
+                                        : 'https://via.placeholder.com/100';
+                                @endphp
+                                <img src="{{ $symbolImageUrl }}" alt="{{ $symbol->name }}">
                             </div>
                             <h6 class="fw-bold mb-1">{{ $symbol->name }}</h6>
                             <span class="badge bg-soft-gray text-navy rounded-pill mb-2 small">{{ $symbol->iso_code }}</span>

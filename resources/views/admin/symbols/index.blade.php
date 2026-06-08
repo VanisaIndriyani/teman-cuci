@@ -32,7 +32,12 @@
                     <tr>
                         <td class="ps-4">
                             <div class="bg-light p-2 rounded d-inline-block">
-                                <img src="{{ $symbol->image_path }}" width="30" height="30" alt="{{ $symbol->name }}">
+                                @php
+                                    $symbolImageUrl = $symbol->image_path
+                                        ? (\Illuminate\Support\Str::startsWith($symbol->image_path, ['http://', 'https://']) ? $symbol->image_path : asset(ltrim($symbol->image_path, '/')))
+                                        : 'https://via.placeholder.com/30';
+                                @endphp
+                                <img src="{{ $symbolImageUrl }}" width="30" height="30" alt="{{ $symbol->name }}">
                             </div>
                         </td>
                         <td class="fw-semibold">{{ $symbol->name }}</td>
