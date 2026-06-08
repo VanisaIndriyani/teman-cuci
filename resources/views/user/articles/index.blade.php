@@ -80,7 +80,14 @@
                             <div class="card-body p-4 p-lg-5">
                                 <div class="d-flex align-items-center mb-3">
                                     @foreach($article->categories as $cat)
-                                    <span class="badge bg-blue-soft text-blue-light rounded-pill px-3 py-2 me-2">{{ $cat->name }}</span>
+                                    @php
+                                        $badgeClass = match ($cat->slug ?? null) {
+                                            'perawatan-khusus' => 'bg-blue-light text-white',
+                                            'tips-trik' => 'bg-navy text-white',
+                                            default => 'bg-blue-soft text-blue-light',
+                                        };
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }} rounded-pill px-3 py-2 me-2">{{ $cat->name }}</span>
                                     @endforeach
                                     <span class="text-muted small ms-auto"><i class="bi bi-calendar3 me-1"></i> {{ $article->created_at->format('M d, Y') }}</span>
                                 </div>

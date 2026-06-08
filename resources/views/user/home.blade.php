@@ -116,6 +116,24 @@
         left: 20px;
         z-index: 10;
     }
+    .article-badge.badge {
+        border: 1px solid rgba(10, 25, 47, 0.12);
+        backdrop-filter: blur(8px);
+    }
+    .badge-cat-basic {
+        background: rgba(255, 255, 255, 0.92) !important;
+        color: var(--navy) !important;
+    }
+    .badge-cat-special {
+        background: var(--blue-light) !important;
+        color: #ffffff !important;
+        border-color: rgba(52, 152, 219, 0.35) !important;
+    }
+    .badge-cat-tips {
+        background: var(--navy) !important;
+        color: #ffffff !important;
+        border-color: rgba(10, 25, 47, 0.35) !important;
+    }
 
     /* Responsive Hero */
     @media (max-width: 991.98px) {
@@ -147,6 +165,21 @@
         .section-title {
             font-size: 1.8rem;
         }
+    }
+
+    .video-tutorial-section {
+        background: linear-gradient(135deg, rgba(235, 245, 251, 0.9), rgba(255, 255, 255, 1));
+        border-radius: 60px;
+        border: 1px solid rgba(10, 25, 47, 0.06);
+    }
+    .video-feature {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(10, 25, 47, 0.06);
+        border-radius: 18px;
+        padding: 12px 14px;
+    }
+    @media (max-width: 991.98px) {
+        .video-tutorial-section { border-radius: 30px; }
     }
 </style>
 @endsection
@@ -210,26 +243,26 @@
 </section>
 
 <!-- Video Tutorial -->
-<section>
+<section class="video-tutorial-section">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6" data-aos="fade-right">
                 <h6 class="text-blue-light fw-bold text-uppercase">Video Panduan</h6>
                 <h2 class="section-title">Edukasi Perawatan<br>Pakaian Berkualitas</h2>
                 <p class="text-muted mb-4 fs-5">Tonton video tutorial kami untuk memahami cara kerja aplikasi dan tips dasar mencuci yang sering diabaikan.</p>
-                <div class="d-flex align-items-center mb-3">
+                <div class="d-flex align-items-center mb-3 video-feature">
                     <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
                         <i class="bi bi-check-lg"></i>
                     </div>
                     <span class="fw-semibold">Teknik pemisahan kain yang benar</span>
                 </div>
-                <div class="d-flex align-items-center mb-3">
+                <div class="d-flex align-items-center mb-3 video-feature">
                     <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
                         <i class="bi bi-check-lg"></i>
                     </div>
                     <span class="fw-semibold">Mengenal jenis noda dan solusinya</span>
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center video-feature">
                     <div class="bg-blue-soft text-blue-light rounded-circle p-2 me-3">
                         <i class="bi bi-check-lg"></i>
                     </div>
@@ -263,7 +296,15 @@
                 <div class="article-card card h-100">
                     <div class="article-img-wrapper">
                         @if($article->categories->first())
-                        <span class="badge bg-white text-navy article-badge shadow-sm rounded-pill px-3 py-2">
+                        @php
+                            $catSlug = $article->categories->first()->slug ?? null;
+                            $badgeClass = match ($catSlug) {
+                                'perawatan-khusus' => 'badge-cat-special',
+                                'tips-trik' => 'badge-cat-tips',
+                                default => 'badge-cat-basic',
+                            };
+                        @endphp
+                        <span class="badge article-badge shadow-sm rounded-pill px-3 py-2 {{ $badgeClass }}">
                             {{ $article->categories->first()->name }}
                         </span>
                         @endif
