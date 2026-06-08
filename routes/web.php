@@ -7,6 +7,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SymbolController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\SawCriteriaScoreController as AdminSawCriteriaScoreController;
 
 // User Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -37,6 +38,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         // SAW Weights CRUD
         Route::resource('saw', \App\Http\Controllers\Admin\SawWeightController::class);
+
+        Route::get('/saw-scores', [AdminSawCriteriaScoreController::class, 'index'])->name('saw-scores.index');
+        Route::post('/saw-scores', [AdminSawCriteriaScoreController::class, 'update'])->name('saw-scores.update');
         
         // Washing Steps CRUD
         Route::resource('washing-steps', \App\Http\Controllers\Admin\WashingStepController::class);

@@ -244,6 +244,12 @@
                         <span class="nav-text ms-2">Bobot SAW</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.saw-scores.index') }}" class="nav-link {{ request()->routeIs('admin.saw-scores.*') ? 'active' : '' }}">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                        <span class="nav-text ms-2">Sub Kriteria SAW</span>
+                    </a>
+                </li>
                 <div class="px-4 py-2 small text-uppercase fw-bold opacity-50 nav-text" style="font-size: 0.7rem;">Konten</div>
                 <li class="nav-item">
                     <a href="{{ route('admin.washing-steps.index') }}" class="nav-link {{ request()->routeIs('admin.washing-steps.*') ? 'active' : '' }}">
