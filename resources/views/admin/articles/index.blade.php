@@ -34,7 +34,7 @@
                         <td class="ps-4">
                             <div class="d-flex align-items-center">
                                 @if($article->thumbnail)
-                                <img src="{{ $article->thumbnail }}" class="rounded me-3" width="50" height="40" style="object-fit: cover;">
+                                <img src="{{ \Illuminate\Support\Str::startsWith($article->thumbnail, ['http://', 'https://']) ? $article->thumbnail : asset(ltrim($article->thumbnail, '/')) }}" class="rounded me-3" width="50" height="40" style="object-fit: cover;">
                                 @else
                                 <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 40px;">
                                     <i class="bi bi-image text-muted"></i>

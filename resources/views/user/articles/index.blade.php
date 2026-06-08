@@ -69,7 +69,12 @@
                 <div class="article-main-card card mb-5" data-aos="fade-up">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <img src="{{ $article->thumbnail ?? 'https://via.placeholder.com/600x400' }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 250px;" alt="{{ $article->title }}">
+                            @php
+                                $thumbnailUrl = $article->thumbnail
+                                    ? (\Illuminate\Support\Str::startsWith($article->thumbnail, ['http://', 'https://']) ? $article->thumbnail : asset(ltrim($article->thumbnail, '/')))
+                                    : 'https://via.placeholder.com/600x400';
+                            @endphp
+                            <img src="{{ $thumbnailUrl }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 250px;" alt="{{ $article->title }}">
                         </div>
                         <div class="col-md-7">
                             <div class="card-body p-4 p-lg-5">

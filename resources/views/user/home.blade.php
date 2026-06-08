@@ -267,7 +267,12 @@
                             {{ $article->categories->first()->name }}
                         </span>
                         @endif
-                        <img src="{{ $article->thumbnail ?? 'https://via.placeholder.com/600x400' }}" alt="{{ $article->title }}">
+                        @php
+                            $thumbnailUrl = $article->thumbnail
+                                ? (\Illuminate\Support\Str::startsWith($article->thumbnail, ['http://', 'https://']) ? $article->thumbnail : asset(ltrim($article->thumbnail, '/')))
+                                : 'https://via.placeholder.com/600x400';
+                        @endphp
+                        <img src="{{ $thumbnailUrl }}" alt="{{ $article->title }}">
                     </div>
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center mb-3 text-muted small">
