@@ -242,12 +242,12 @@
                         <li><a href="{{ route('about') }}" class="footer-link">Tentang Kami</a></li>
                         <li><a href="#" class="footer-link">Kebijakan Privasi</a></li>
                         <li><a href="#" class="footer-link">Syarat & Ketentuan</a></li>
-                        <li><a href="#" class="footer-link">Kontak</a></li>
+                        <li><a href="mailto:temancucistaff@gmail.com?subject=Kontak%20TemanCuci" class="footer-link">Kontak</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
                     <h5>Hubungi Kami</h5>
-                    <p style="color: var(--text-muted);"><i class="bi bi-envelope-fill text-blue-light me-2"></i> hello@temancuci.com</p>
+                    <p style="color: var(--text-muted);"><i class="bi bi-envelope-fill text-blue-light me-2"></i> <a href="mailto:temancucistaff@gmail.com?subject=Hubungi%20TemanCuci" class="footer-link d-inline mb-0">temancucistaff@gmail.com</a></p>
                     <p style="color: var(--text-muted);"><i class="bi bi-geo-alt-fill text-blue-light me-2"></i> Jakarta, Indonesia</p>
                 </div>
             </div>

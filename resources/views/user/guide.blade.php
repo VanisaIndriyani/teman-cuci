@@ -98,7 +98,7 @@
                 <div class="mt-5 p-5 bg-blue-soft rounded-5 text-center" data-aos="fade-up">
                     <h4 class="fw-800 text-navy mb-3">Masih punya pertanyaan?</h4>
                     <p class="text-muted mb-4">Tim kami siap membantu Anda merawat pakaian dengan lebih baik.</p>
-                    <a href="mailto:hello@temancuci.com" class="btn btn-primary rounded-pill px-5">Hubungi CS Kami</a>
+                    <a href="mailto:temancucistaff@gmail.com?subject=Konsultasi%20TemanCuci" class="btn btn-primary rounded-pill px-5">Hubungi CS Kami</a>
                 </div>
             </div>
         </div>
