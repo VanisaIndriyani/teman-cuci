@@ -8,10 +8,6 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 
 class DashboardController extends Controller
 {
@@ -45,40 +41,38 @@ class DashboardController extends Controller
 
     public function export()
     {
-        $fileName = 'rekomendasi_' . date('Y-m-d') . '.xlsx';
+        $fileName = 'rekomendasi_' . date('Y-m-d') . '.xls';
+        $logs = RecLog::latest()->get();
 
-        $export = new class($this) implements FromCollection, WithHeadings, WithMapping
-        {
-            public function __construct(private DashboardController $controller) {}
+        $escape = static fn ($value) => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 
-            public function collection()
-            {
-                return RecLog::latest()->get();
-            }
+        $html = '<table border="1">';
+        $html .= '<thead><tr>';
+        $html .= '<th>ID</th><th>Jenis Kain</th><th>Warna</th><th>Motif</th><th>Tingkat Kekotoran</th><th>Metode Rekomendasi</th><th>Skor SAW</th><th>Tanggal</th>';
+        $html .= '</tr></thead><tbody>';
 
-            public function headings(): array
-            {
-                return ['ID', 'Jenis Kain', 'Warna', 'Motif', 'Tingkat Kekotoran', 'Metode Rekomendasi', 'Skor SAW', 'Tanggal'];
-            }
+        foreach ($logs as $log) {
+            $score = is_array($log->saw_scores) ? json_encode($log->saw_scores) : (string) $log->saw_scores;
+            $createdAt = $log->created_at ? $log->created_at->format('Y-m-d H:i:s') : '';
 
-            public function map($log): array
-            {
-                $score = is_array($log->saw_scores) ? json_encode($log->saw_scores) : (string) $log->saw_scores;
+            $html .= '<tr>';
+            $html .= '<td>' . $escape($log->id) . '</td>';
+            $html .= '<td>' . $escape($log->fabric) . '</td>';
+            $html .= '<td>' . $escape($log->color) . '</td>';
+            $html .= '<td>' . $escape($log->motif) . '</td>';
+            $html .= '<td>' . $escape($log->dirt_level) . '</td>';
+            $html .= '<td>' . $escape($this->getMethodName($log->top_method)) . '</td>';
+            $html .= '<td>' . $escape($score) . '</td>';
+            $html .= '<td>' . $escape($createdAt) . '</td>';
+            $html .= '</tr>';
+        }
 
-                return [
-                    $log->id,
-                    $log->fabric,
-                    $log->color,
-                    $log->motif,
-                    $log->dirt_level,
-                    $this->controller->getMethodName($log->top_method),
-                    $score,
-                    optional($log->created_at)->format('Y-m-d H:i:s'),
-                ];
-            }
-        };
+        $html .= '</tbody></table>';
 
-        return Excel::download($export, $fileName);
+        return response($html, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename={$fileName}",
+        ]);
     }
 
     private function getMethodName($m)
